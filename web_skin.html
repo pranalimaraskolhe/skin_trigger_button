@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skin Analyzer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin: 10px;
+            cursor: pointer;
+        }
+        #status {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+    </style>
+    <script>
+        async function captureImage() {
+            try {
+                let response = await fetch('http://<rpi-ip>:<rpi-port>/capture', { method: 'POST' });
+                let data = await response.json();
+                document.getElementById('status').innerText = 'Image captured: ' + data.message;
+            } catch (error) {
+                console.error('Error capturing image:', error);
+                document.getElementById('status').innerText = 'Error capturing image.';
+            }
+        }
+
+        async function analyzeImage() {
+            try {
+                let response = await fetch('http://<pc-ip>:<pc-port>/upload', { method: 'GET' });
+                let data = await response.json();
+                document.getElementById('status').innerText = 'Analysis result: ' + JSON.stringify(data);
+            } catch (error) {
+                console.error('Error analyzing image:', error);
+                document.getElementById('status').innerText = 'Error analyzing image.';
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Skin Analyzer</h1>
+    <button onclick="captureImage()">Capture Image</button>
+    <button onclick="analyzeImage()">Analyze Image</button>
+    <div id="status">Status will appear here.</div>
+</body>
+</html>
