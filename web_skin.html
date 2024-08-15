@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skin Analyzer</title>
+    <script>
+        function captureImage() {
+            fetch('http://<rpi-ip>:<port>/capture', { method: 'POST' })
+                .then(response => response.json())
+                .then(data => alert('Image captured: ' + data.message))
+                .catch(error => console.error('Error:', error));
+        }
+
+        function analyzeImage() {
+            fetch('http://<pc-ip>:<port>/analyze', { method: 'POST' })
+                .then(response => response.json())
+                .then(data => alert('Analysis result: ' + JSON.stringify(data)))
+                .catch(error => console.error('Error:', error));
+        }
+    </script>
+</head>
+<body>
+    <h1>Skin Analyzer</h1>
+    <button onclick="captureImage()">Capture Image</button>
+    <button onclick="analyzeImage()">Analyze Image</button>
+</body>
+</html>
